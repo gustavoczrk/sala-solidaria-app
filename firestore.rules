@@ -1,19 +1,36 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2025, 10, 4);
+    // --- REGRAS PARA A COLEÇÃO 'projetos' ---
+    match /projetos/{projectId} {
+      // QUALQUER PESSOA (logada ou não) pode ler a lista de projetos e seus detalhes.
+      allow read: if true;
+      
+      // APENAS usuários logados podem criar projetos.
+      allow create: if request.auth != null;
+      
+      // APENAS o dono do projeto OU um admin podem atualizar ou excluir.
+      allow update, delete: if request.auth != null && 
+                             (request.auth.uid == resource.data.userId || 
+                              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+
+      // --- REGRAS PARA A SUBCOLEÇÃO 'itens' ---
+      match /itens/{itemId} {
+        allow read: if true;
+        // Apenas o dono do projeto ou um admin podem gerenciar os itens.
+        allow create, update, delete: if request.auth != null && 
+                                     (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' || 
+                                      get(/databases/$(database)/documents/projetos/$(projectId)).data.userId == request.auth.uid);
+      }
+    }
+
+    // --- REGRAS PARA A COLEÇÃO 'users' ---
+    match /users/{userId} {
+      // Apenas usuários logados podem ler perfis.
+      allow read: if request.auth != null;
+      // Um usuário só pode criar ou atualizar o seu PRÓPRIO perfil.
+      allow create, update: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
