@@ -1,26 +1,15 @@
-// src/pages/LandingPage.jsx
-
 import React from 'react';
 import { Link } from 'react-router-dom'; // O Link agora será usado
 
 export default function LandingPage() {
   return (
-    // CONTÊINER ATUALIZADO:
-    // Mantém 'justify-center'. Adicionamos padding (py-20)
     <div
       className="relative flex flex-col items-center justify-center py-20 px-4" // Ajuste o py-20 se necessário
     >
-      {/* Overlay Sutil (Opcional) */}
-      {/* <div className="absolute inset-0 bg-black/5"></div> */}
-
-      {/* Card branco centralizado - AGORA CONTÉM O TÍTULO */}
       <div className="relative bg-white bg-opacity-95 p-8 md:p-10 rounded-lg shadow-2xl max-w-2xl text-center z-10
                  border-2 border-transparent hover:border-coral transition-all duration-300 ease-in-out">
-
-        {/* Cabeçalho DENTRO do card (Título + Subtítulo) */}
         <header className="mb-8"> {/* Aumentamos a margem inferior do header */}
-          {/* TÍTULO PRINCIPAL - AGORA DENTRO DO CARD */}
-          {/* Reduzimos um pouco o tamanho e a margem inferior */}
+          {/* TÍTULO PRINCIPAL*/}
           <h1 className="text-4xl md:text-5xl font-bold text-gunmetal mb-4">
             Bem-vindo à Sala Solidária!
           </h1>

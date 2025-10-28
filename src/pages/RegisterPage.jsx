@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-// Importação de Ícones
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faUserPlus,  

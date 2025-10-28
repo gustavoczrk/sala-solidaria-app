@@ -12,7 +12,6 @@ export default function ContactInfoModal({ isOpen, onClose, project, professor }
   const displayPhone = professor ? professor.telefone : null;
 
   return (
-    // Backdrop (Fundo escuro)
     <div 
       className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4" 
       onClick={onClose}

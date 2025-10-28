@@ -1,17 +1,13 @@
-// src/pages/ProjectDetailPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom'; // Ensure Link is imported
 import { doc, getDoc, collection, addDoc, serverTimestamp, query, onSnapshot, orderBy, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 import ContactInfoModal from '../components/ContactInfoModal';
-// Ensure all necessary icons are imported
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt, faCheckSquare, faHeart, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
-// --- AddItemForm Component ---
-// (Ensure this component definition is present and complete in your file)
+
 function AddItemForm({ projectId }) {
     const [itemName, setItemName] = useState('');
     const [quantity, setQuantity] = useState(1);
@@ -40,7 +36,7 @@ function AddItemForm({ projectId }) {
         setItemName('');
         setQuantity(1);
       } catch (err) {
-        console.error("Erro ao adicionar item:", err); // Log error
+        console.error("Erro ao adicionar item:", err); 
         setError("Não foi possível adicionar o item.");
       } finally {
         setLoading(false);
@@ -82,7 +78,6 @@ function AddItemForm({ projectId }) {
     );
 }
 
-// --- ProjectDetailPage Component ---
 export default function ProjectDetailPage() {
   const { projectId } = useParams();
   const { currentUser } = useAuth(); // Get currentUser
@@ -94,12 +89,12 @@ export default function ProjectDetailPage() {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // useEffect for hybrid logic (fetch project and potentially professor)
+
   useEffect(() => {
     const fetchProjectData = async () => {
       try {
         setLoading(true);
-        setError(null); // Clear previous errors
+        setError(null); 
         const projectRef = doc(db, 'projetos', projectId);
         const docSnap = await getDoc(projectRef);
 
@@ -107,7 +102,7 @@ export default function ProjectDetailPage() {
           const projectData = { id: docSnap.id, ...docSnap.data() };
           setProject(projectData);
 
-          // Try to fetch professor details only if project has userId
+         
           if (projectData.userId) {
             try {
               const professorRef = doc(db, 'users', projectData.userId);
@@ -115,20 +110,20 @@ export default function ProjectDetailPage() {
               if (professorSnap.exists()) {
                 setProfessor(professorSnap.data());
               } else {
-                 setProfessor(null); // Professor doc doesn't exist
+                 setProfessor(null); 
               }
             } catch (profError) {
               console.warn("Could not load professor details (visitor might not be logged in).", profError);
-              setProfessor(null); // Permission error or other issue
+              setProfessor(null);
             }
           } else {
-             setProfessor(null); // No userId on project
+             setProfessor(null);
           }
         } else {
           setError("Projeto não encontrado.");
         }
       } catch (err) {
-        console.error("Error loading project:", err); // Log the actual error
+        console.error("Error loading project:", err); 
         setError("Falha ao carregar o projeto.");
       } finally {
         setLoading(false);
@@ -137,9 +132,8 @@ export default function ProjectDetailPage() {
     fetchProjectData();
   }, [projectId]);
 
-  // useEffect to fetch items in real-time
+
   useEffect(() => {
-    // Ensure projectId is available before querying subcollection
     if (!projectId) return;
 
     const itemsCollectionRef = collection(db, 'projetos', projectId, 'itens');
@@ -159,11 +153,9 @@ export default function ProjectDetailPage() {
       }
     );
 
-    // Cleanup function to unsubscribe when component unmounts
     return () => unsubscribe();
   }, [projectId]); // Dependency array includes projectId
 
-  // --- Action Functions ---
 
   const handleMarkAsReceived = async (item) => {
     const receivedAmountStr = window.prompt(`Quantos "${item.nomeItem}" você recebeu?`);
@@ -203,13 +195,10 @@ export default function ProjectDetailPage() {
     setIsModalOpen(true);
   };
 
-  // --- Render Logic ---
-
   if (loading && !project) return <p className="text-center py-10 text-paynes-gray">Carregando detalhes do projeto...</p>;
   if (error) return <p className="text-center py-10 text-red-600 font-semibold">{error}</p>;
   if (!project) return <p className="text-center py-10 text-paynes-gray">Projeto não encontrado.</p>;
 
-  // Check if the current user is the owner of the project
   const isOwner = currentUser && project && currentUser.uid === project.userId;
 
   return (
@@ -252,7 +241,6 @@ export default function ProjectDetailPage() {
         <div className="space-y-4">
             {!loading && items.length > 0 ? (
               items.map(item => (
-                // Individual Item Card
                 <div key={item.id} className="border border-gray-200 rounded-md p-4 bg-gray-50">
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                     {/* Item Info */}
@@ -262,8 +250,7 @@ export default function ProjectDetailPage() {
                       {/* Progress Bar */}
                       <div className="w-full bg-gray-300 rounded-full h-2.5 mt-1">
                         <div
-                          className="bg-green-500 h-2.5 rounded-full transition-all duration-300 ease-in-out"
-                          // Ensure division by zero is handled, ensure values are numbers
+                          className="bg-green-500 h-2.5 rounded-full transition-all duration-300 ease-in-out"                 
                           style={{ width: `${Math.min(100, ( (item.qtdRecebida || 0) / (item.qtdNecessaria || 1) ) * 100)}%` }}
                         ></div>
                       </div>
@@ -271,7 +258,6 @@ export default function ProjectDetailPage() {
                     {/* Action Buttons */}
                     <div className="flex-shrink-0 flex items-center gap-3 mt-2 sm:mt-0">
                       {isOwner ? (
-                        // Buttons for Professor
                         <>
                           <button onClick={() => handleMarkAsReceived(item)} className="text-sm text-green-600 hover:text-green-800 flex items-center gap-1 font-medium hover:underline">
                             <FontAwesomeIcon icon={faCheckSquare} className="h-4 w-4"/> Recebido

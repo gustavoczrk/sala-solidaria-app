@@ -1,19 +1,16 @@
-// src/pages/CreateProjectPage.jsx
-
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-// ÍCONES ATUALIZADOS
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faPlusCircle,  // Para o botão
-  faFileSignature, // Para o título da página
-  faLightbulb,   // Para o título do projeto
-  faSchool,    // Para a escola
-  faParagraph,   // Para a descrição
-  faMapMarkerAlt // Para o endereço
+  faPlusCircle,  
+  faFileSignature, 
+  faLightbulb,  
+  faSchool,    
+  faParagraph,   
+  faMapMarkerAlt 
 } from '@fortawesome/free-solid-svg-icons';
 
 export default function CreateProjectPage() {
@@ -26,7 +23,6 @@ export default function CreateProjectPage() {
   const { currentUser, userProfile } = useAuth();
   const navigate = useNavigate();
 
-  // handleSubmit (Sem alterações)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!currentUser || !userProfile) {
@@ -60,7 +56,7 @@ export default function CreateProjectPage() {
     }
   };
 
-  // --- JSX ATUALIZADO COM ÍCONES ---
+
   return (
     <div className="py-8">
       <div className="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-2xl mx-auto border-2 border-transparent hover:border-coral transition-all duration-300 ease-in-out">

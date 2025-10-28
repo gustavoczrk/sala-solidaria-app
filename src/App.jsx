@@ -1,9 +1,6 @@
-// src/App.jsx
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Componentes e Páginas
 import LandingPage from './pages/LandingPage';
 import ProjectsPage from './pages/ProjectsPage';
 import LoginPage from './pages/LoginPage';
@@ -18,17 +15,13 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer';
 
-// Opcional: Remova a importação do App.css se ele estiver vazio
-// import './App.css'; 
+
 
 function App() {
   return (
-    // APLICAMOS FLEXBOX AQUI para controlar o layout vertical
     <Router className="flex flex-col min-h-screen"> 
       <Navbar />
 
-      {/* flex-grow FAZ ESTA ÁREA OCUPAR O ESPAÇO DISPONÍVEL */}
-      {/* Adicionamos container mx-auto px-4 aqui para centralizar o conteúdo */}
       <main className="container mx-auto px-4 py-8 flex-grow"> 
         <Routes>
           {/* Rotas Públicas */}
@@ -45,7 +38,7 @@ function App() {
           <Route path="/projeto/edit/:projectId" element={<ProtectedRoute><EditProjectPage /></ProtectedRoute>} />
           <Route path="/meu-perfil" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         </Routes>
-      </main> {/* Fechamos o <main> aqui */}
+      </main> 
 
       <Footer />
     </Router>

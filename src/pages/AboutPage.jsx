@@ -4,14 +4,12 @@ import logoImage from '../assets/logo-sala-solidaria.png';
 
 export default function AboutPage() {
   return (
-    // Contêiner principal com padding vertical para espaçamento acima e abaixo do card
     <div className="flex justify-center items-center py-16 px-4"> 
       
       {/* CARD BRANCO PARA O CONTEÚDO */}
       <div className="bg-white bg-opacity-95 p-8 md:p-10 rounded-lg shadow-xl max-w-3xl w-full
                  border-2 border-transparent hover:border-coral transition-all duration-300 ease-in-out"> 
-        
-        {/* LOGO ADICIONADO AQUI */}
+
         <div className="flex justify-center mb-6"> {/* Div para centralizar o logo */}
           <img src={logoImage} alt="Sala Solidária Logo" className="h-16 w-auto" /> {/* Ajuste a altura h-16 conforme necessário */}
         </div>
